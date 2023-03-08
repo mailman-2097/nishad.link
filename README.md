@@ -1,7 +1,6 @@
 # 🛋️ The Agile, Cloud and Devops Lounge
 
 ![The Agile, Cloud and Devops Lounge](public/blog-og.png)
-
 ![Typescript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 ![GitHub](https://img.shields.io/github/license/satnaing/astro-paper?color=%232F3741&style=for-the-badge)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-%23FE5196?logo=conventionalcommits&logoColor=white&style=for-the-badge)](https://conventionalcommits.org)
@@ -18,7 +17,9 @@ All blog posts are stored in `src/content/blog` directory.
 ## 💻 Tech Stack
 
 **Main Framework** - [Astro](https://astro.build/)
+
 **Website Theme** - [AstroPaper](https://astro.build/themes/details/astro-paper/)
+
 **Web Hosting** - [Cloudflare](https://www.cloudflare.com/)
 
 ## ✨ Get in touch
