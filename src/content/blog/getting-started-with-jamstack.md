@@ -13,7 +13,7 @@ tags:
   - markdown
   - astrojs
   - ssg
-ogImage: ""
+ogImage: "/assets/jamstack_logo.svg"
 description: Humble beginnings of my blog
 ---
 
