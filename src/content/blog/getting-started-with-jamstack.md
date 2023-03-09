@@ -13,13 +13,15 @@ tags:
   - markdown
   - astrojs
   - ssg
-ogImage: "/assets/jamstack_logo.svg"
+ogImage: "/assets/jamstack_logo.png"
 description: Humble beginnings of my blog
 ---
 
 ## Table of contents
 
 ## Introduction
+
+[![Jamstack](/assets/jamstack_logo.png "Jamstack")](https://jamstack.org/)
 
 This is my first blog built using Nodejs. Under the hood it uses [Astro](https://astro.build/).
 
