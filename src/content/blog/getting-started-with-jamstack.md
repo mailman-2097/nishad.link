@@ -14,7 +14,7 @@ tags:
   - astrojs
   - ssg
 ogImage: ""
-description: This is how it all started
+description: Humble beginnings of my blog
 ---
 
 ## Table of contents
@@ -30,8 +30,7 @@ Astro is a javascript or typescript based templating engine and runs on [nodejs]
 In my search for setting up a blog, I came across another tech acronym [JAMstack](https://jamstack.org/)
 and it introduced me to the next generation of websites called Static Site Generators (SSG).
 
-SSG are essentially javascript sites that are compiled into static pages; ok may be that is too technical
-but all that means is no database required.
+SSGs are essentially javascript sites that are compiled into static pages; all that means is _no database required_.
 
 ## Looking at the options
 
@@ -54,7 +53,7 @@ They have official themes on their website and the documentation was good.
 
 Obviously, there is a learning curve and the number of integrations (can I say plugins) are growing.
 
-From my experience as a Java developer, I know that creating I knew that I did not have the time to create a theme from scratch.
+From my experience as a Java developer, I know that I did not have the time to create a theme from scratch.
 
 However, I found a few blog themes that had all the main functionality I needed:
 

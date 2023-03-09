@@ -4,7 +4,7 @@ export const SITE = {
   website: "https://nishad.link/",
   author: "Nishad K S",
   desc: "Blog for all things agile, cloud and devops",
-  title: "The agile, cloud and devops lounge",
+  title: "nishad.link",
   ogImage: "blog-og.png",
   lightAndDarkMode: true,
   postPerPage: 3,
