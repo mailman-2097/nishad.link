@@ -179,7 +179,56 @@ micro-runner-test:
 
 * `Tags` are an important way to select the appropriate runner for your pipeline or job. Make sure to setup the correct runner `tags` in Gitlab such that they can be utilised in your pipeline
 
-#### Runner operation in progress
+#### A successful pipeline execution
+
+[![Pipeline](/assets/blog2-a-pipeline-run-success.png "Pipeline")]()
+
+## Important considerations 
+
+🚨 Before you embark on your journey, you need to review the following details. 🚨
+
+### Gitlab CICD and Container Registry
+
+* The community edition is quite feature rich thus requires considerable compute and storage resources.
+* *Considerable* technical debt will be incurred if you choose to use Self signed certificates when setting up your Gitlab server and container registry.
+* Gitlab supports [Let's Encrypt](https://letsencrypt.org/) certificates and you can use the [certbot](https://certbot.eff.org/) tool to create certificates for your deployment.
+
+### Kubernetes and Openshift
+
+* I have not deployed Kubernetes storage as part of this demonstration but I have gotten away with using the `emptyDir` storage. But a more robust deployment should have been configured with persistent volume claims.
+
+For further information refer to [Configuring Storage for Runners](https://docs.gitlab.com/runner/executors/kubernetes/#configure-volume-types)
+
+* It is best to run un-privileged containers in Openshift, but if you need to run the pods with higher privileges you can do so by associating a higher privilege security context to the gitlab runner service account using role base access controls.
+
+* If you setup runners through the marketplace community operator, there may be cases when the gitlab runner operator is not available. This can occur if you are on the latest version of Openshift and the community operator has not been published for that version.
+
+## Troubleshooting 
+
+The gitlab console provides a debug console where you can review the pipeline logs to validate if the correct runner image is being used for your job and conduct other troubleshooting.
+
+### Insufficient resource or other scheduling issues
+
+* In some cases, pipeline jobs can fail due to insufficient resources or other technical glitches.  
+
+```bash
+Running with gitlab-runner 17.7.0 (3153ccc6)
+  on gitlab-runner-ubi9micro-runner-698bbff49b-p5l6b t2_MVTdfZ, system ID: r_ECbstx8CpvGu
+Preparing the "kubernetes" executor 00:00
+Using Kubernetes namespace: gitlab-runner
+Using Kubernetes executor with image registry.access.redhat.com/ubi9-micro:latest ...
+Using attach strategy to execute scripts...
+Preparing environment 03:06
+Using FF_USE_POD_ACTIVE_DEADLINE_SECONDS, the Pod activeDeadlineSeconds will be set to the job timeout: 1h0m0s...
+Waiting for pod gitlab-runner/runner-t2mvtdfz-project-2-concurrent-0-7t40yuqh to be running, status is Pending
+	Unschedulable: "0/1 nodes are available: 1 Insufficient cpu. preemption: 0/1 nodes are available: 1 No preemption victims found for incoming pod.."
+Waiting for pod gitlab-runner/runner-t2mvtdfz-project-2-concurrent-0-7t40yuqh to be running, status is Pending
+	Unschedulable: "0/1 nodes are available: 1 Insufficient cpu. preemption: 0/1 nodes are available: 1 No preemption victims found for incoming pod.."
+```
+
+* If you encounter such issues you can put retry logic in your Gitlab pipeline manifest.
+
+### Monitoring your runner pods
 
 You can monitor the runners from the command line as the pipeline jobs run.
 
@@ -216,55 +265,6 @@ runner-t2mvtdfz-project-2-concurrent-0-7t40yuqh     0/2     Terminating       0 
 runner-t2mvtdfz-project-2-concurrent-0-nnja40x0     0/2     PodInitializing   0          9s
 runner-t2mvtdfz-project-2-concurrent-0-nnja40x0     2/2     Running           0          11
 ```
-
-#### A successful pipeline execution
-
-[![Pipeline](/assets/blog2-a-pipeline-run-success.png "Pipeline")]()
-
-## Important considerations 
-
-🚨 Before you embark on your journey, you need to review the following details. 🚨
-
-### Gitlab CICD and Container Registry
-
-* The community edition is quite feature rich thus requires considerable compute and storage resources.
-* *Considerable* technical debt will be incurred if you choose to use Self signed certificates when setting up your Gitlab server and container registry.
-* Gitlab supports [Let's Encrypt](https://letsencrypt.org/) certificates and you can use the [certbot](https://certbot.eff.org/) tool to create certificates for your deployment.
-
-### Kubernetes and Openshift
-
-* I have not deployed Kubernetes storage as part of this demonstration but I have gotten away with using the `emptyDir` storage. But a more robust deployment should have been configured with persistent volume claims.
-
-For further information refer to [Configuring Storage for Runners](https://docs.gitlab.com/runner/executors/kubernetes/#configure-volume-types)
-
-* It is best to run un-privileged containers in Openshift, but if you need to run the pods with higher privileges you can do so by associating a higher privilege security context to the gitlab runner service account using role base access controls.
-
-* If you setup runners through the marketplace community operator, there may be cases when the gitlab runner operator is not available. This can occur if you are on the latest version of Openshift and the community operator has not been published for that version.
-
-## Troubleshooting Section
-
-The gitlab console provides a debug console where you can review the pipeline logs to validate if the correct runner image is being used for your job and conduct other troubleshooting.
-
-### Insufficient resource or other scheduling issues
-
-* In some cases, pipeline jobs can fail due to insufficient resources or other technical glitches.  
-
-```bash
-Running with gitlab-runner 17.7.0 (3153ccc6)
-  on gitlab-runner-ubi9micro-runner-698bbff49b-p5l6b t2_MVTdfZ, system ID: r_ECbstx8CpvGu
-Preparing the "kubernetes" executor 00:00
-Using Kubernetes namespace: gitlab-runner
-Using Kubernetes executor with image registry.access.redhat.com/ubi9-micro:latest ...
-Using attach strategy to execute scripts...
-Preparing environment 03:06
-Using FF_USE_POD_ACTIVE_DEADLINE_SECONDS, the Pod activeDeadlineSeconds will be set to the job timeout: 1h0m0s...
-Waiting for pod gitlab-runner/runner-t2mvtdfz-project-2-concurrent-0-7t40yuqh to be running, status is Pending
-	Unschedulable: "0/1 nodes are available: 1 Insufficient cpu. preemption: 0/1 nodes are available: 1 No preemption victims found for incoming pod.."
-Waiting for pod gitlab-runner/runner-t2mvtdfz-project-2-concurrent-0-7t40yuqh to be running, status is Pending
-	Unschedulable: "0/1 nodes are available: 1 Insufficient cpu. preemption: 0/1 nodes are available: 1 No preemption victims found for incoming pod.."
-```
-
-* If you encounter such issues you can put retry logic in your Gitlab pipeline manifest.
 
 ## Closing thoughts
 
