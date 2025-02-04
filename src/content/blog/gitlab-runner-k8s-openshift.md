@@ -47,7 +47,7 @@ __Container Registry__
 
 * You also need a container registry, for my deployment I have chosen to enable the in-built [Gitlab Container registry](https://docs.gitlab.com/ee/user/packages/container_registry/)
 
-> Technically, it makes more sense to have a seperate container registry solution such as [harbor](https://goharbor.io/docs/2.12.0/install-config/) or [quay](https://docs.projectquay.io/deploy_red_hat_quay_operator.html).    
+> Technically, it makes more sense to have a separate container registry solution such as [harbor](https://goharbor.io/docs/2.12.0/install-config/) or [quay](https://docs.projectquay.io/deploy_red_hat_quay_operator.html).    
 
 __Container Tooling__
 
@@ -63,11 +63,11 @@ A code repository is setup as part of a [Gitlab project](https://docs.gitlab.com
 
 [Gitlab Runners](https://docs.gitlab.com/runner/) will need to be setup as part of a self-managed deployment. The runners once configured successfully can execute your devops pipelines and jobs.
 
-Runner agents can also be run on Virtal Machines but it is makes more sense to have a containerised runner infrastructure since they are ephemeral in nature and provide better scalability.
+Runner agents can also be run on Virtual Machines but it is makes more sense to have a containerised runner infrastructure since they are ephemeral in nature and provide better scalability.
 
 ### Runner Deployment on Openshift or Kubernetes
 
-You have a couple of options in deplying the runner infrastructure on openshift. 
+You have a couple of options in deploying the runner infrastructure on openshift. 
 
 It can either be deployed as a [helm chart](https://docs.gitlab.com/runner/install/kubernetes.html) _or_ as an [Openshift operator](https://docs.gitlab.com/runner/install/operator.html). 
 
@@ -122,12 +122,11 @@ spec:
 
 ```
 
-In case of any issues, refer to the official documenation for configuring the [runner operator on Gitlab](https://docs.gitlab.com/runner/configuration/configuring_runner_operator.html)
+In case of any issues, refer to the official documentation for configuring the [runner operator on Gitlab](https://docs.gitlab.com/runner/configuration/configuring_runner_operator.html)
 
 You can also refer to the official documentation on setting up [ rootless buildah runners on Gitlab](https://docs.gitlab.com/ee/ci/docker/buildah_rootless_tutorial.html)
 
-
-If all goes to plan, as it occassionally does 😜. 
+If all goes to plan, as it occasionally does 😜. 
 
 🎉 All your runners will be online in Gitlab and ready for use. 🎉
 
