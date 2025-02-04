@@ -48,25 +48,25 @@ The main components that need to be deployed are as follows:
 
 Before we go further, I will provide a brief overview of Gitlab. A code repository is setup as part of a [Gitlab project](https://docs.gitlab.com/ee/user/project/). Projects can be setup at the user or group level.
 
-[Gitlab Runners](https://docs.gitlab.com/runner/). Since this is a self-managed deployment, we have to provide runners for the CICD server to execute devops pipelines and jobs.
+[Gitlab Runners](https://docs.gitlab.com/runner/) will need to be setup as part of a self-managed deployment. The runners once configured successfully can execute devops pipelines and jobs.
 
-Runners can run on VMs but it is makes more sense to have a containerised runner infrastructure since they are ephemeral in nature.
+Runner agents can also run on Virtal Machines but it is makes more sense to have a containerised runner infrastructure since they are ephemeral in nature and provide better scalability.
 
 ### Runner Deployment on Openshift or Kubernetes
 
 You have a couple of options in deplying the runner infrastructure on openshift. 
 
-It can either be deployed as a [helm chart](https://docs.gitlab.com/runner/install/kubernetes.html) or as an [Openshift operator](https://docs.gitlab.com/runner/install/operator.html). 
+It can either be deployed as a [helm chart](https://docs.gitlab.com/runner/install/kubernetes.html) _or_ as an [Openshift operator](https://docs.gitlab.com/runner/install/operator.html). 
 
-In my case, I have installed the operator from the [openshift marketplace](https://docs.openshift.com/container-platform/4.15/applications/red-hat-marketplace.html). 
+b. In my case, I have installed the operator from the [openshift marketplace](https://docs.openshift.com/container-platform/4.15/applications/red-hat-marketplace.html). 
 
-It only takes a few clicks to install the operator into Openshift and we are good to go!
+It only takes a few clicks to install the operator into Openshift and we are good to go! So I chose this method.
 
 [![Operators](/assets/blog2-a-operators-installed.png "Operators")]()
 
 #### Runner configuration on Gitlab
 
-You need to setup runners at the group or project level. It makes sense to have runners setup at the group level. You can also have multiple runner configuration that can be made available to your end users if required.
+You need to setup runners at the group or project level. To me it made more sense to have runners setup at the group level. You can and ideally should have multiple runner configurations that can be made available to your end users as required.
 
 [![Runners](/assets/blog2-a-runners-configured.png "Runners")]()
 
@@ -76,20 +76,22 @@ In my case, I have multiple runners configured.
 
 * Additional runners have been configured using the [Redhat UBI 9 Micro and Minimal Images](https://developers.redhat.com/articles/ubi-faq#).
 
-##### Let's look at the Runner Manifests
+##### Let's look at the Runner Instance Manifests
 
-Once the runners are configured instance. You need to create runner instance in Kubernetes.
+Once the runners are configured instance in Gitlab. 
+
+You need to deploy a runner in Kubernetes.
 
 For configuring a runner instance the following information is critical:
 
 1. Gitlab instance URL coordinates
 1. Kubernetes secret with the gitlab runner token. the token associates the runner deployment with the Gitlab runner instance.
 
-Optionally, you can pass the following to the configuration data:
+Optionally, you can pass additional configuration data to suit your particular needs:
 
 * Custom Runner Configuration [custom-config.toml](https://docs.gitlab.com/runner/configuration/configuring_runner_operator.html#customize-configtoml-with-a-configuration-template) required incase you need to configure your runner
 
-* Override runner [environment variables](https://docs.gitlab.com/runner/configuration/configuring_runner_operator.html#configure-a-proxy-environment) 
+* Override runner [environment variables](https://docs.gitlab.com/runner/configuration/configuring_runner_operator.html#configure-a-proxy-environment)
 
 ```yaml
 
@@ -111,11 +113,16 @@ In case of any issues refer to the official documenation for configuring the [ru
 
 You can also refer to the official documentation on setting up [ rootless buildah runners on Gitlab](https://docs.gitlab.com/ee/ci/docker/buildah_rootless_tutorial.html)
 
+
+If all goes to plan, as it occassionally does 😜. 
+
+🎉🎉 All your runners can be configured and online in Gitlab and ready for use. 🎉🎉
+
+[![Runners Online](/assets/blog2-a-runners-online-in-gitlab.png "Runners Online")]()
+
 #### A Sample Pipeline Manifest snippet
 
 A Gitlab pipeline is best configured as a yaml manifest. A pipeline will essentially contain a series of jobs. Jobs are best organised into various stages.
-
-[![Pipeline](/assets/blog2-a-pipeline-run-success.png "Pipeline")]()
 
 ```yaml
 
@@ -197,11 +204,17 @@ runner-t2mvtdfz-project-2-concurrent-0-nnja40x0     0/2     PodInitializing   0 
 runner-t2mvtdfz-project-2-concurrent-0-nnja40x0     2/2     Running           0          11
 ```
 
+#### A successful pipeline execution
+
+[![Pipeline](/assets/blog2-a-pipeline-run-success.png "Pipeline")]()
+
 ## Important considerations
+
+Before you embark on your journey, you need to review the following details.
 
 ### Gitlab CICD and Container Registry
 
-* The community edition is quite feature rich but requires considerable compute and storage resources.
+* The community edition is quite feature rich thus requires considerable compute and storage resources.
 * Considerable technical debt will be incurred if you choose to use Self signed certificates when setting up your Gitlab server and container registry.
 * Gitlab supports [Let's Encrypt](https://letsencrypt.org/) certificates and you can use the [certbot](https://certbot.eff.org/) tool to create certificates for your deployment.
 
@@ -243,5 +256,6 @@ Waiting for pod gitlab-runner/runner-t2mvtdfz-project-2-concurrent-0-7t40yuqh to
 This setup will help you to achieve the following outcomes:
 
 1. Setup a scalable ephemeral runner infrastructure on Kubernetes.
-1. Established mutliple types of runners to suit the pipeline requirements
+1. Established mutliple types of runners to suit the pipeline requirements.
 1. Leveraged `Tags` to select the appropriate runner for the job.
+1. A robust self-hosted version control and devops solution.
