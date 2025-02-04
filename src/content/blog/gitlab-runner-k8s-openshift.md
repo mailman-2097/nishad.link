@@ -22,35 +22,48 @@ description: Setting up Gitlab CICD with container runners on Openshift Kubernet
 
 [![CICD](/assets/blog2.png "CICD")]()
 
-In this blog post I will explain a relatively straight forward way to get ephemeral runners on Openshift Kubernetes container platform.
+In this blog post I shall explain a relatively straight forward way to get ephemeral runners on Openshift Kubernetes container platform.
 
-### Deployment Assumptions
+## Solution Deployment
 
 The main components that need to be deployed are as follows:
 
-1. Cloud or Self Managed [Gitlab](https://gitlab.com/) CICD solution deployment or as a [Kubernetes operator](https://docs.gitlab.com/operator/). In my case I am running the Gitlab linux package in an [Alma Linux](https://almalinux.org/) virtual machine running on a [hypervisor](https://www.proxmox.com/en/).
+__Gitlab Server__
 
-> Gitlab CICD can also be deployed on an Openshift cluster or any other Kubernetes distribution through a [Helm chart](https://docs.gitlab.com/charts/installation/)
+1. Cloud or Self Managed [Gitlab](https://gitlab.com/) CICD solution deployment or as a [Kubernetes operator](https://docs.gitlab.com/operator/) which is an easy install method in Openshift. 
+
+In my case, I have chosen the linux installation method for setting up Gitlab.
+I am using an [Alma Linux](https://almalinux.org/) virtual machine running on a [hypervisor](https://www.proxmox.com/en/).
+
+> Gitlab CICD can also be deployed on an Openshift cluster operator or any other Kubernetes distribution through a [Helm chart](https://docs.gitlab.com/charts/installation/)
+
+__Kubernetes Cluster__
 
 * [Openshift](https://www.redhat.com/en/technologies/cloud-computing/openshift) cluster or any other Kubernetes engine such as [EKS](https://aws.amazon.com/eks/) or [GKE](https://cloud.google.com/kubernetes-engine). For this demonstration, I have an [Openshift Installation](https://docs.openshift.com/container-platform/4.15/installing/overview/index.html).
 
 > A [single node Openshift install](https://docs.openshift.com/container-platform/4.15/installing/installing_sno/install-sno-installing-sno.html) will also work adequately.
 
-* For the container image builds I will be using [buildah](https://buildah.io/) since it provides the capability to generate OCI container images.
-
-* For local container image build and testing, I would also encourage the use of [podman](https://podman.io/)
+__Container Registry__
 
 * You also need a container registry, for my deployment I have chosen to enable the in-built [Gitlab Container registry](https://docs.gitlab.com/ee/user/packages/container_registry/)
 
 > Technically, it makes more sense to have a seperate container registry solution such as [harbor](https://goharbor.io/docs/2.12.0/install-config/) or [quay](https://docs.projectquay.io/deploy_red_hat_quay_operator.html).    
 
+__Container Tooling__
+
+* For the container image builds I will be using [buildah](https://buildah.io/) since it provides the capability to generate OCI container images.
+
+* For local container image build and testing, I would also encourage the use of [podman](https://podman.io/)
+
 ### Self-Managed Gitlab CICD and Runners
 
-Before we go further, I will provide a brief overview of Gitlab. A code repository is setup as part of a [Gitlab project](https://docs.gitlab.com/ee/user/project/). Projects can be setup at the user or group level.
+Before we go further, I will provide a brief overview of Gitlab logical structures. 
 
-[Gitlab Runners](https://docs.gitlab.com/runner/) will need to be setup as part of a self-managed deployment. The runners once configured successfully can execute devops pipelines and jobs.
+A code repository is setup as part of a [Gitlab project](https://docs.gitlab.com/ee/user/project/). Projects can be setup at the user or group level.
 
-Runner agents can also run on Virtal Machines but it is makes more sense to have a containerised runner infrastructure since they are ephemeral in nature and provide better scalability.
+[Gitlab Runners](https://docs.gitlab.com/runner/) will need to be setup as part of a self-managed deployment. The runners once configured successfully can execute your devops pipelines and jobs.
+
+Runner agents can also be run on Virtal Machines but it is makes more sense to have a containerised runner infrastructure since they are ephemeral in nature and provide better scalability.
 
 ### Runner Deployment on Openshift or Kubernetes
 
@@ -70,7 +83,7 @@ You need to setup runners at the group or project level. To me it made more sens
 
 [![Runners](/assets/blog2-a-runners-configured.png "Runners")]()
 
-In my case, I have multiple runners configured.
+In my case, I have multiple runners configured:
 
 * One is a buildah runner with the runner image from [quay.io](https://quay.io/buildah/stable).
 
@@ -82,10 +95,10 @@ Once the runners are configured instance in Gitlab.
 
 You need to deploy a runner in Kubernetes.
 
-For configuring a runner instance the following information is critical:
+For configuring a runner instance in Kubernetes, the following information is critical:
 
-1. Gitlab instance URL coordinates
-1. Kubernetes secret with the gitlab runner token. the token associates the runner deployment with the Gitlab runner instance.
+1. Gitlab instance URL
+1. Kubernetes secret with the gitlab runner token. The token associates the runner deployment with the Gitlab runner instance and is generated from the Gitlab Server.
 
 Optionally, you can pass additional configuration data to suit your particular needs:
 
@@ -109,14 +122,14 @@ spec:
 
 ```
 
-In case of any issues refer to the official documenation for configuring the [runner operator on Gitlab](https://docs.gitlab.com/runner/configuration/configuring_runner_operator.html)
+In case of any issues, refer to the official documenation for configuring the [runner operator on Gitlab](https://docs.gitlab.com/runner/configuration/configuring_runner_operator.html)
 
 You can also refer to the official documentation on setting up [ rootless buildah runners on Gitlab](https://docs.gitlab.com/ee/ci/docker/buildah_rootless_tutorial.html)
 
 
 If all goes to plan, as it occassionally does 😜. 
 
-🎉🎉 All your runners can be configured and online in Gitlab and ready for use. 🎉🎉
+🎉 All your runners will be online in Gitlab and ready for use. 🎉
 
 [![Runners Online](/assets/blog2-a-runners-online-in-gitlab.png "Runners Online")]()
 
@@ -208,29 +221,33 @@ runner-t2mvtdfz-project-2-concurrent-0-nnja40x0     2/2     Running           0 
 
 [![Pipeline](/assets/blog2-a-pipeline-run-success.png "Pipeline")]()
 
-## Important considerations
+## Important considerations 
 
-Before you embark on your journey, you need to review the following details.
+🚨 Before you embark on your journey, you need to review the following details. 🚨
 
 ### Gitlab CICD and Container Registry
 
 * The community edition is quite feature rich thus requires considerable compute and storage resources.
-* Considerable technical debt will be incurred if you choose to use Self signed certificates when setting up your Gitlab server and container registry.
+* *Considerable* technical debt will be incurred if you choose to use Self signed certificates when setting up your Gitlab server and container registry.
 * Gitlab supports [Let's Encrypt](https://letsencrypt.org/) certificates and you can use the [certbot](https://certbot.eff.org/) tool to create certificates for your deployment.
 
 ### Kubernetes and Openshift
 
-* I have not deployed Kubernetes storage in this demo setup and I have gotten away with `emptyDir`. But a more robust deployment could be configured with persistent volume claims.
+* I have not deployed Kubernetes storage as part of this demonstration but I have gotten away with using the `emptyDir` storage. But a more robust deployment should have been configured with persistent volume claims.
 
 For further information refer to [Configuring Storage for Runners](https://docs.gitlab.com/runner/executors/kubernetes/#configure-volume-types)
 
-* It is best to run un-privileged containers in Openshift, but you can provide increase permissions by passing higher privilege secuirty context to the runner service account with the role base access control mechanism.
+* It is best to run un-privileged containers in Openshift, but if you need to run the pods with higher privileges you can do so by associating a higher privilege security context to the gitlab runner service account using role base access controls.
 
-* If you setup runners through the marketplace community operator, there may be cases when the gitlab runner operator is not available. This can occur if you are on the latest versions of Openshift.
+* If you setup runners through the marketplace community operator, there may be cases when the gitlab runner operator is not available. This can occur if you are on the latest version of Openshift and the community operator has not been published for that version.
 
 ## Troubleshooting Section
 
-* In some cases pipeline jobs can fail due to insufficient resources or other technical glitches.  
+The gitlab console provides a debug console where you can review the pipeline logs to validate if the correct runner image is being used for your job and conduct other troubleshooting.
+
+### Insufficient resource or other scheduling issues
+
+* In some cases, pipeline jobs can fail due to insufficient resources or other technical glitches.  
 
 ```bash
 Running with gitlab-runner 17.7.0 (3153ccc6)
@@ -247,13 +264,11 @@ Waiting for pod gitlab-runner/runner-t2mvtdfz-project-2-concurrent-0-7t40yuqh to
 	Unschedulable: "0/1 nodes are available: 1 Insufficient cpu. preemption: 0/1 nodes are available: 1 No preemption victims found for incoming pod.."
 ```
 
-> here you can review the log to validate if the correct runner image is being used for your job 
-
 * If you encounter such issues you can put retry logic in your Gitlab pipeline manifest.
 
 ## Closing thoughts
 
-This setup will help you to achieve the following outcomes:
+This setup should help you to achieve the following outcomes:
 
 1. Setup a scalable ephemeral runner infrastructure on Kubernetes.
 1. Established mutliple types of runners to suit the pipeline requirements.
