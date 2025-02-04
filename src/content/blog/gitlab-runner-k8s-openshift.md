@@ -30,7 +30,7 @@ The main components that need to be deployed are as follows:
 
 __Gitlab Server__
 
-1. Cloud or Self Managed [Gitlab](https://gitlab.com/) CICD solution deployment or as a [Kubernetes operator](https://docs.gitlab.com/operator/) which is an easy install method in Openshift. 
+1. Cloud or Self Managed [Gitlab](https://gitlab.com/) CICD solution deployment or as a [Kubernetes operator](https://docs.gitlab.com/operator/) which is an easy install method in Openshift.
 
 In my case, I have chosen the linux installation method for setting up Gitlab.
 I am using an [Alma Linux](https://almalinux.org/) virtual machine running on a [hypervisor](https://www.proxmox.com/en/).
@@ -47,7 +47,7 @@ __Container Registry__
 
 * You also need a container registry, for my deployment I have chosen to enable the in-built [Gitlab Container registry](https://docs.gitlab.com/ee/user/packages/container_registry/)
 
-> Technically, it makes more sense to have a separate container registry solution such as [harbor](https://goharbor.io/docs/2.12.0/install-config/) or [quay](https://docs.projectquay.io/deploy_red_hat_quay_operator.html).    
+> Technically, it makes more sense to have a separate container registry solution such as [harbor](https://goharbor.io/docs/2.12.0/install-config/) or [quay](https://docs.projectquay.io/deploy_red_hat_quay_operator.html).
 
 __Container Tooling__
 
@@ -57,7 +57,7 @@ __Container Tooling__
 
 ### Self-Managed Gitlab CICD and Runners
 
-Before we go further, I will provide a brief overview of Gitlab logical structures. 
+Before we go further, I will provide a brief overview of Gitlab logical structures.
 
 A code repository is setup as part of a [Gitlab project](https://docs.gitlab.com/ee/user/project/). Projects can be setup at the user or group level.
 
@@ -67,11 +67,11 @@ Runner agents can also be run on Virtual Machines but it is makes more sense to 
 
 ### Runner Deployment on Openshift or Kubernetes
 
-You have a couple of options in deploying the runner infrastructure on openshift. 
+You have a couple of options in deploying the runner infrastructure on openshift.
 
-It can either be deployed as a [helm chart](https://docs.gitlab.com/runner/install/kubernetes.html) _or_ as an [Openshift operator](https://docs.gitlab.com/runner/install/operator.html). 
+It can either be deployed as a [helm chart](https://docs.gitlab.com/runner/install/kubernetes.html) _or_ as an [Openshift operator](https://docs.gitlab.com/runner/install/operator.html).
 
-b. In my case, I have installed the operator from the [openshift marketplace](https://docs.openshift.com/container-platform/4.15/applications/red-hat-marketplace.html). 
+b. In my case, I have installed the operator from the [openshift marketplace](https://docs.openshift.com/container-platform/4.15/applications/red-hat-marketplace.html).
 
 It only takes a few clicks to install the operator into Openshift and we are good to go! So I chose this method.
 
@@ -91,7 +91,7 @@ In my case, I have multiple runners configured:
 
 ##### Let's look at the Runner Instance Manifests
 
-Once the runners are configured instance in Gitlab. 
+Once the runners are configured instance in Gitlab.
 
 You need to deploy a runner in Kubernetes.
 
@@ -126,7 +126,7 @@ In case of any issues, refer to the official documentation for configuring the [
 
 You can also refer to the official documentation on setting up [ rootless buildah runners on Gitlab](https://docs.gitlab.com/ee/ci/docker/buildah_rootless_tutorial.html)
 
-If all goes to plan, as it occasionally does 😜. 
+If all goes to plan, as it occasionally does 😜.
 
 🎉 All your runners will be online in Gitlab and ready for use. 🎉
 
@@ -182,7 +182,7 @@ micro-runner-test:
 
 [![Pipeline](/assets/blog2-a-pipeline-run-success.png "Pipeline")]()
 
-## Important considerations 
+## Important considerations
 
 🚨 Before you embark on your journey, you need to review the following details. 🚨
 
@@ -202,13 +202,13 @@ For further information refer to [Configuring Storage for Runners](https://docs.
 
 * If you setup runners through the marketplace community operator, there may be cases when the gitlab runner operator is not available. This can occur if you are on the latest version of Openshift and the community operator has not been published for that version.
 
-## Troubleshooting 
+## Troubleshooting
 
 The gitlab console provides a debug console where you can review the pipeline logs to validate if the correct runner image is being used for your job and conduct other troubleshooting.
 
 ### Insufficient resource or other scheduling issues
 
-* In some cases, pipeline jobs can fail due to insufficient resources or other technical glitches.  
+* In some cases, pipeline jobs can fail due to insufficient resources or other technical glitches.
 
 ```bash
 Running with gitlab-runner 17.7.0 (3153ccc6)
@@ -270,6 +270,6 @@ runner-t2mvtdfz-project-2-concurrent-0-nnja40x0     2/2     Running           0 
 This setup should help you to achieve the following outcomes:
 
 1. Setup a scalable ephemeral runner infrastructure on Kubernetes.
-1. Established mutliple types of runners to suit the pipeline requirements.
+1. Established multiple types of runners to suit the pipeline requirements.
 1. Leveraged `Tags` to select the appropriate runner for the job.
 1. A robust self-hosted version control and devops solution.
