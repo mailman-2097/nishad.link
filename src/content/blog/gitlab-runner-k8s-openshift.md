@@ -20,7 +20,7 @@ description: Setting up Gitlab CICD with container runners on Openshift Kubernet
 
 ## Introduction
 
-[![CICD](/assets/blog2.png "CICD")]()
+![CICD](/assets/blog2.png "CICD")
 
 In this blog post I shall explain a relatively straight forward way to get ephemeral runners on Openshift Kubernetes container platform.
 
@@ -30,10 +30,10 @@ The main components that need to be deployed are as follows:
 
 __Gitlab Server__
 
-1. Cloud or Self Managed [Gitlab](https://gitlab.com/) CICD solution deployment or as a [Kubernetes operator](https://docs.gitlab.com/operator/) which is an easy install method in Openshift.
+* Cloud or Self Managed [Gitlab](https://gitlab.com/) CICD solution deployment or as a [Kubernetes operator](https://docs.gitlab.com/operator/). The operator install is an easy install method in Openshift.
 
-In my case, I have chosen the linux installation method for setting up Gitlab.
-I am using an [Alma Linux](https://almalinux.org/) virtual machine running on a [hypervisor](https://www.proxmox.com/en/).
+In my case, I have chosen a conventional linux installation method for setting up Gitlab Community Edition.
+Further I have deployed an [Alma Linux](https://almalinux.org/) virtual machine running on a [hypervisor](https://www.proxmox.com/en/).
 
 > Gitlab CICD can also be deployed on an Openshift cluster operator or any other Kubernetes distribution through a [Helm chart](https://docs.gitlab.com/charts/installation/)
 
@@ -41,17 +41,17 @@ __Kubernetes Cluster__
 
 * [Openshift](https://www.redhat.com/en/technologies/cloud-computing/openshift) cluster or any other Kubernetes engine such as [EKS](https://aws.amazon.com/eks/) or [GKE](https://cloud.google.com/kubernetes-engine). For this demonstration, I have an [Openshift Installation](https://docs.openshift.com/container-platform/4.15/installing/overview/index.html).
 
-> A [single node Openshift install](https://docs.openshift.com/container-platform/4.15/installing/installing_sno/install-sno-installing-sno.html) will also work adequately.
+_A [single node Openshift install](https://docs.openshift.com/container-platform/4.15/installing/installing_sno/install-sno-installing-sno.html) will also work adequately._
 
 __Container Registry__
 
 * You also need a container registry, for my deployment I have chosen to enable the in-built [Gitlab Container registry](https://docs.gitlab.com/ee/user/packages/container_registry/)
 
-> Technically, it makes more sense to have a separate container registry solution such as [harbor](https://goharbor.io/docs/2.12.0/install-config/) or [quay](https://docs.projectquay.io/deploy_red_hat_quay_operator.html).
+_Technically, it makes more sense to have a separate container registry solution such as [harbor](https://goharbor.io/docs/2.12.0/install-config/) or [quay](https://docs.projectquay.io/deploy_red_hat_quay_operator.html)._
 
 __Container Tooling__
 
-* For the container image builds I will be using [buildah](https://buildah.io/) since it provides the capability to generate OCI container images.
+* For container image builds, I am using [buildah](https://buildah.io/) since it provides the capability to generate OCI container images.
 
 * For local container image build and testing, I would also encourage the use of [podman](https://podman.io/)
 
@@ -75,13 +75,13 @@ b. In my case, I have installed the operator from the [openshift marketplace](ht
 
 It only takes a few clicks to install the operator into Openshift and we are good to go! So I chose this method.
 
-[![Operators](/assets/blog2-a-operators-installed.png "Operators")]()
+![Operators](/assets/blog2-a-operators-installed.png "Operators")
 
 #### Runner configuration on Gitlab
 
 You need to setup runners at the group or project level. To me it made more sense to have runners setup at the group level. You can and ideally should have multiple runner configurations that can be made available to your end users as required.
 
-[![Runners](/assets/blog2-a-runners-configured.png "Runners")]()
+![Runners](/assets/blog2-a-runners-configured.png "Runners")
 
 In my case, I have multiple runners configured:
 
@@ -130,7 +130,7 @@ If all goes to plan, as it occasionally does 😜.
 
 🎉 All your runners will be online in Gitlab and ready for use. 🎉
 
-[![Runners Online](/assets/blog2-a-runners-online-in-gitlab.png "Runners Online")]()
+![Runners Online](/assets/blog2-a-runners-online-in-gitlab.png "Runners Online")
 
 #### A Sample Pipeline Manifest snippet
 
@@ -180,7 +180,7 @@ micro-runner-test:
 
 #### A successful pipeline execution
 
-[![Pipeline](/assets/blog2-a-pipeline-run-success.png "Pipeline")]()
+![Pipeline](/assets/blog2-a-pipeline-run-success.png "Pipeline")
 
 ## Important considerations
 
@@ -189,7 +189,7 @@ micro-runner-test:
 ### Gitlab CICD and Container Registry
 
 * The community edition is quite feature rich thus requires considerable compute and storage resources.
-* *Considerable* technical debt will be incurred if you choose to use Self signed certificates when setting up your Gitlab server and container registry.
+* If you want to setup a development server, *considerable* technical debt and not to mention headaches will be encountered if you choose to use self-signed certificates when setting up your Gitlab server and container registry.
 * Gitlab supports [Let's Encrypt](https://letsencrypt.org/) certificates and you can use the [certbot](https://certbot.eff.org/) tool to create certificates for your deployment.
 
 ### Kubernetes and Openshift
@@ -200,7 +200,7 @@ For further information refer to [Configuring Storage for Runners](https://docs.
 
 * It is best to run un-privileged containers in Openshift, but if you need to run the pods with higher privileges you can do so by associating a higher privilege security context to the gitlab runner service account using role base access controls.
 
-* If you setup runners through the marketplace community operator, there may be cases when the gitlab runner operator is not available. This can occur if you are on the latest version of Openshift and the community operator has not been published for that version.
+* If you setup runners through the marketplace community operator, there may be cases where the gitlab runner operator is not available. This can occur if you are on the latest version of Openshift and the community operator has not been published for that version.
 
 ## Troubleshooting
 

@@ -1,18 +1,45 @@
-# 🛋️ The Agile, Cloud and Devops Lounge
+# 🛋️ My personal blog 
 
-![The Agile, Cloud and Devops Lounge](public/blog-og.png)
+This is my personal technical blog. It has the following features:
+
+1. Dark and Light Theme Switcher
+1. Search
+1. Automated Table of Contents
+1. Mobile device friendly
+1. Blog Tags
+
 ![Typescript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 ![GitHub](https://img.shields.io/github/license/satnaing/astro-paper?color=%232F3741&style=for-the-badge)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-%23FE5196?logo=conventionalcommits&logoColor=white&style=for-the-badge)](https://conventionalcommits.org)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=for-the-badge)](http://commitizen.github.io/cz-cli/)
 
-## 🚀 Technical Overview
+## 🚀 Operational Guides
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+### Creating blog posts
+
+Astro looks for `.astro` or `.md` files in the `src/pages/` directory. 
+
+Each page is exposed as a route based on its file name.
 
 Any static assets, like images, can be placed in the `public/` directory.
 
 All blog posts are stored in `src/content/blog` directory.
+
+### Publishing posts
+
+This blog utlises a complete Gitops lifecycle.
+
+Create a feature branch `blog/n/blogslug`
+
+Review your changes by using a spell checker and preview your markdown script
+
+Push your code and create a pull or merge request. 
+
+A pipeline will run and give you a staging url to review your changes.
+
+Once QA is complete; merge the pull request.
+
+_Take care to `squash and merge` the pull request. Also, delete the feature branch when you are done._
 
 ## 💻 Tech Stack
 
@@ -24,11 +51,15 @@ All blog posts are stored in `src/content/blog` directory.
 
 ## ✨ Get in touch
 
-You can contact me via my [Linkedin](www.linkedin.com/in/nishadsaithaly)
+You can contact me via my socials: 
+
+* [Linkedin](www.linkedin.com/in/nishadsaithaly)
+* [Mastadon](https://mastodon.social/@metaaverse)
+* [BlueSky](https://bsky.app/profile/metaaverse0.bsky.social)
 
 ## 📜 License
 
-Licensed under the MIT License, Copyright © 2023
+Licensed under the MIT License, Copyright © 2025
 
 ---
 
