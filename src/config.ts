@@ -122,8 +122,8 @@ export const SOCIALS: SocialObjects = [
   },
   {
     name: "Mastodon",
-    href: "https://github.com/mailman-2097",
+    href: "https://mastodon.social/@metaaverse",
     linkTitle: `${SITE.title} on Mastodon`,
-    active: false,
+    active: true,
   },
 ];
