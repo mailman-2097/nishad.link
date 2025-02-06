@@ -48,7 +48,7 @@ The template requires date field to be provided in the ISO 8601 fmt
 ```bash
 
 # current timestamp in ISO 8601 format using Bash
-TZ="Australia/Sydney" date +"%Y-%m-%dT%H:%M:%S%z"
+TZ="Australia/Sydney" date -u +"%Y-%m-%dT%H:%M:%SZ"
 
 ```
 

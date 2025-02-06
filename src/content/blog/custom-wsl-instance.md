@@ -1,6 +1,6 @@
 ---
 author: Nishad Saithaly
-pubDatetime: 2025-02-06T11:58:34+1100
+pubDatetime: 2025-02-06T01:03:24Z
 title: Custom WSL in Windows
 postSlug: custom-wsl-linux
 featured: false
