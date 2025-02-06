@@ -3,7 +3,7 @@ author: Nishad Saithaly
 pubDatetime: 2023-03-07T02:28:59Z
 title: Getting started with JAMstack
 postSlug: getting-started-with-jamstack
-featured: true
+featured: false
 draft: false
 tags:
   - jamstack
