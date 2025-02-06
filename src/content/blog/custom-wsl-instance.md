@@ -34,7 +34,7 @@ wsl --import rhel9a C:\WSL\rhel9a .\rhel9ws2-image.tar.gz
 wsl -d rhel9a
 ```
 
-1. For RHEL you may need a valid license for software updates
+a. For RHEL you may need a valid license for software updates
 
 ```bash
 subscription-manager register
@@ -42,7 +42,7 @@ subscription-manager register
 dnf install -y sudo bash-completion
 ```
 
-1. Configure default user
+b. Configure default user
 
 ```bash
 groupadd -g 1000 nishad
@@ -54,11 +54,11 @@ usermod -aG wheel nishad
 su - nishad
 ```
 
-1. Configure WSL defaults
+c. Configure WSL defaults
 
 ```bash
 vi /etc/wsl.conf
-```
+
 [boot]
 systemd = true
 
@@ -79,7 +79,7 @@ options = "metadata,uid=1000,gid=1000,umask=22,fmask=11,case=off"
 
 You can review advanced settings [here](https://learn.microsoft.com/en-us/windows/wsl/wsl-config)
 
-1. Restart WSL
+c. Restart WSL
 
 ```bash
 
@@ -95,4 +95,5 @@ With this method you can setup multiple linux WSL instances and experiment safel
 ## References
 
 [Medium Article](https://medium.com/@AnupamMajhi/windows-red-hat-rhel9-with-wsl2-bafa45be0131)
+
 [Redhat Article](https://developers.redhat.com/articles/2023/11/15/create-customized-rhel-images-wsl-environment#workflow)
