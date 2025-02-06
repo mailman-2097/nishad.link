@@ -41,6 +41,40 @@ Once QA is complete; merge the pull request.
 
 _Take care to `squash and merge` the pull request. Also, delete the feature branch when you are done._
 
+#### Working with Dates
+
+The template requires date field to be provided in the ISO 8601 fmt
+
+```bash
+
+# current timestamp in ISO 8601 format using Bash
+TZ="Australia/Sydney" date -u +"%Y-%m-%dT%H:%M:%SZ"
+
+```
+
+#### Working with Images
+
+By convention, images are saved in `png` format and favicon as `svg` format.
+
+It is best to use the [vtracer](https://github.com/visioncortex/vtracer) tool to convert images.
+
+```bash
+# Ubuntu
+
+sudo apt update -y
+sudo apt  install cargo -y
+cargo install vtracer
+
+# Add the follwowing to your bash profile
+# Add Cargo's bin directory to PATH
+if [ -d "$HOME/.cargo/bin" ]; then
+    PATH="$HOME/.cargo/bin:$PATH"
+fi
+
+vtracer --input blog3.png --output blog3.svg
+
+```
+
 ## 💻 Tech Stack
 
 **Main Framework** - [Astro](https://astro.build/)
